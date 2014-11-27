@@ -1,7 +1,6 @@
 package app.api;
 
 import java.util.List;
-
 import app.model.Donation;
 import app.model.User;
 
@@ -31,5 +30,23 @@ public class DonationServiceAPI
   {
     Rest.delete ("/api/users/" + user.id);
   }  
+  
+  public static List<Donation> getDonations(User user) throws Exception
+  {
+    String response =  Rest.get("/api/users/" + user.id + "/donations");
+    List<Donation> donationList = JsonParsers.json2Donations(response);
+    return donationList;
+  }
+  
+  public static Donation createDonation(User user, Donation donation) throws Exception
+  {
+    String response = Rest.post ("/api/users/" + user.id + "/donations", JsonParsers.donation2Json(donation));
+    return JsonParsers.json2Donation(response);
+  }
+  
+  public static void deleteDonation(User user, Donation donation) throws Exception
+  {
+    Rest.delete ("/api/users/" + user.id + "/donations/" + donation.id);
+  }   
 }
 
